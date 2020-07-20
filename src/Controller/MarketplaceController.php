@@ -8,7 +8,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class MarketplaceController extends AbstractController
 {
     /**
-     * @Route("/marketplace", name="marketplace")
+     * @Route("/", name="accueil")
      */
     public function index()
     {
