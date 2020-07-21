@@ -18,6 +18,16 @@ class MarketplaceController extends AbstractController
     }
 
     /**
+     * @Route("/annonces", name="annonces")
+     */
+    public function annonces()
+    {
+        return $this->render('marketplace/annonces.html.twig', [
+            'controller_name' => 'MarketplaceController',
+        ]);
+    }
+
+    /**
      * @Route("/admin", name="admin")
      */
     public function admin()

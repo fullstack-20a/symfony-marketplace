@@ -16,14 +16,40 @@
     <body>
         <header class="container">
             <h1>MA MARKET</h1>
+            <nav>
+                <ul class="nav">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="{{ url('accueil') }}">Accueil</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url('annonces') }}">Annonces</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url('app_register') }}">Inscription</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url('membre') }}">Espace Membre</a>
+                    </li>
+                </ul>
+            </nav>
         </header>
 
         <main>
             {% block body %}{% endblock %}
         </main>
-        
+
         <footer class="container">
             <p>tous droits réservés</p>
+            <nav>
+                <ul class="nav">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="{{ url('accueil') }}">Accueil</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="{{ url('admin') }}">Admin</a>
+                    </li>
+                </ul>
+            </nav>
         </footer>
 
         <!-- Optional JavaScript -->
