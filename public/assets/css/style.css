@@ -35,6 +35,6 @@ footer {
 }
 
 .carousel-item img {
-    height:30vmin;
+    height:40vmin;
     object-fit: cover;
 }
