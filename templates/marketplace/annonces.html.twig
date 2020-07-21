@@ -5,15 +5,15 @@
 {% block body %}
 
         <section class="container">
-            <h2>DECOUVREZ LES {{ annoncesTotal }} DERNIERES ANNONCES</h2>
+            <h2 class="p-3">DECOUVREZ LES {{ annoncesTotal }} DERNIERES ANNONCES</h2>
             <div class="row">
                 {% for annonce in annonces %}
                     <article class="col-sm">
-                        <div><img class="img-thumbnail" src="{{ annonce.photo }}" alt=""></div>
+                        <div><img class="img-thumbnail shadow-sm" src="{{ annonce.photo }}" alt=""></div>
                         <h3><a href="{{ annonce.uri }}">{{ annonce.titre }}</a></h3>
-                        <div>{{ annonce.description }}</div>
-                        <div>publié le {{ annonce.datePublication ? annonce.datePublication|date('d/m/Y à H:i') : '' }}</div>
-                        <div>publiée par {{ annonce.user.username }}</div>
+                        <p class="border border-primary p-2">{{ annonce.description }}</p>
+                        <div class="text-secondary">de {{ annonce.user.username }}</div>
+                        <div class="text-secondary">publiée le {{ annonce.datePublication ? annonce.datePublication|date('d/m/Y à H:i') : '' }}</div>
                     </article>
                 {% else %}
                     <div class="col-sm">

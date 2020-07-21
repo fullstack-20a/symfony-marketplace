@@ -33,3 +33,8 @@ footer {
     width:80%;
     height:80%;
 }
+
+.carousel-item img {
+    height:30vmin;
+    object-fit: cover;
+}
