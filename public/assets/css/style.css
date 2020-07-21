@@ -29,7 +29,7 @@ footer {
     top:0%;
 }
 .lightbox img {
-    object-fit: cover;
+    object-fit: contain;
     width:80%;
     height:80%;
 }
