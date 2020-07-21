@@ -22,6 +22,7 @@ footer {
     align-items: center;
     opacity:0;
     transition: all 0.3s linear;
+    flex-direction: column;
 }
 .lightbox.afficher {
     opacity:1;
