@@ -5,17 +5,22 @@
 {% block body %}
 
         <section class="container">
-            <h2>DECOUVREZ LES DERNIERES ANNONCES</h2>
+            <h2>DECOUVREZ LES {{ annoncesTotal }} DERNIERES ANNONCES</h2>
             <div class="row">
-                <div class="col-sm">
-                One of three columns
-                </div>
-                <div class="col-sm">
-                One of three columns
-                </div>
-                <div class="col-sm">
-                One of three columns
-                </div>
+                {% for annonce in annonces %}
+                    <article class="col-sm">
+                        <div><img class="img-thumbnail" src="{{ annonce.photo }}" alt=""></div>
+                        <h3><a href="{{ annonce.uri }}">{{ annonce.titre }}</a></h3>
+                        <div>{{ annonce.description }}</div>
+                        <div>publié le {{ annonce.datePublication ? annonce.datePublication|date('d/m/Y à H:i') : '' }}</div>
+                        <div>publiée par {{ annonce.user.username }}</div>
+                    </article>
+                {% else %}
+                    <div class="col-sm">
+                        <h3>DESOLE, AUCUNE ANNONCE EN CE MOMENT...</h3>
+                    </div>
+                {% endfor %}
+
             </div>
         </section>
 

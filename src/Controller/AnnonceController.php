@@ -21,7 +21,11 @@ class AnnonceController extends AbstractController
     public function index(AnnonceRepository $annonceRepository): Response
     {
         return $this->render('annonce/index.html.twig', [
-            'annonces' => $annonceRepository->findAll(),
+            
+            // 'annonces' => $annonceRepository->findAll(),    // TROP BASIQUE
+            // https://www.doctrine-project.org/projects/doctrine-orm/en/2.7/reference/working-with-objects.html#by-simple-conditions
+            // TRI PAR id DECROISSANT
+            'annonces' => $annonceRepository->findBy([], [ "id" => "DESC" ]),
         ]);
     }
 

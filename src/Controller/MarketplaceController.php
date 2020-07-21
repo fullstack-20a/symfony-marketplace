@@ -2,8 +2,10 @@
 
 namespace App\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Repository\AnnonceRepository;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class MarketplaceController extends AbstractController
 {
@@ -20,10 +22,17 @@ class MarketplaceController extends AbstractController
     /**
      * @Route("/annonces", name="annonces")
      */
-    public function annonces()
+    public function annonces(AnnonceRepository $annonceRepository): Response
     {
+        // ICI ON VEUT AFFICHER LA LISTE DES ANNONCES
+        // => SCENARIO CRUD : READ LISTE
+
         return $this->render('marketplace/annonces.html.twig', [
-            'controller_name' => 'MarketplaceController',
+            // ON TRANSMET DE PHP A TWIG LA LISTE DES ANNONCES
+            // DANS LA VARIABLE TWIG annonces
+            'annonces' => $annonceRepository->findBy([], [ "datePublication" => "DESC" ]),
+            // COMPTER TOUTES LES LIGNES DANS LA TABLE SQL annonce
+            'annoncesTotal' => $annonceRepository->count([]),
         ]);
     }
 
