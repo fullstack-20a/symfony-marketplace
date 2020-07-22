@@ -54,6 +54,11 @@ class User implements UserInterface
      */
     private $username;
 
+    /**
+     * @ORM\Column(type="string", length=160)
+     */
+    private $codePostal;
+
     public function __construct()
     {
         $this->annonces = new ArrayCollection();
@@ -183,6 +188,18 @@ class User implements UserInterface
     public function setUsername(string $username): self
     {
         $this->username = $username;
+
+        return $this;
+    }
+
+    public function getCodePostal(): ?string
+    {
+        return $this->codePostal;
+    }
+
+    public function setCodePostal(string $codePostal): self
+    {
+        $this->codePostal = $codePostal;
 
         return $this;
     }

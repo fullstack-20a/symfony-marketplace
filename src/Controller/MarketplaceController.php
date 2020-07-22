@@ -2,7 +2,10 @@
 
 namespace App\Controller;
 
+use App\Entity\Annonce;
+use App\Form\AnnonceMembreType;
 use App\Repository\AnnonceRepository;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -48,12 +51,35 @@ class MarketplaceController extends AbstractController
     }
 
     /**
-     * @Route("/membre", name="membre")
+     * @Route("/membre", name="membre", methods={"GET","POST"})
      */
-    public function membre()
+    public function membre(Request $request): Response
     {
+        $annonce = new Annonce();
+        $form = $this->createForm(AnnonceMembreType::class, $annonce);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            // COMPLETER LES INFOS MANQUANTES
+            // AJOUTER L'AUTEUR GRACE A L'UTILISATEUR CONNECTE
+            $userConnecte = $this->getUser();
+            $annonce->setUser($userConnecte);
+
+            // https://www.php.net/manual/fr/class.datetime.php
+            $dateActuelle = new \DateTime();                // PAS DE NAMESPACE => \
+            $annonce->setDatePublication($dateActuelle);
+
+            // AJOUT DANS LA BASE DE DONNEES
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($annonce);
+            $entityManager->flush();
+
+            // return $this->redirectToRoute('membre');
+        }
+
         return $this->render('marketplace/membre.html.twig', [
-            'controller_name' => 'MarketplaceController',
+            'annonce'   => $annonce,
+            'form'      => $form->createView(),
         ]);
     }
 
