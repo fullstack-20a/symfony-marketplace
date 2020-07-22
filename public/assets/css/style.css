@@ -2,8 +2,8 @@ h1 {
     color:orange;
 }
 
-article img {
-    max-height: 50vmin;
+article img.img-thumbnail {
+    height: 30vmin;
 }
 footer {
     padding-top:4rem;
