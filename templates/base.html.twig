@@ -24,21 +24,21 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{{ url('annonces') }}">Annonces</a>
                     </li>
+                {% if (app.user.username ?? false) %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url('membre') }}">Espace Membre</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url('app_logout') }}">déconnexion</a>
+                    </li>
+                {% else %}
                     <li class="nav-item">
                         <a class="nav-link" href="{{ url('app_register') }}">Inscription</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{{ url('membre') }}">Espace Membre</a>
                     </li>
-    {% if (app.user.username ?? false) %}
-        <li class="nav-item">
-            <a class="nav-link" href="{{ url('app_logout') }}">déconnexion</a>
-        </li>
-    {% else %}
-        <li class="nav-item">
-            <a class="nav-link" href="{{ url('app_login') }}">connexion</a>
-        </li>
-    {% endif %}
+                {% endif %}
                 </ul>
             </nav>
         </header>
