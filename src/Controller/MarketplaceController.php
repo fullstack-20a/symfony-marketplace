@@ -30,6 +30,7 @@ class MarketplaceController extends AbstractController
         return $this->render('marketplace/annonces.html.twig', [
             // ON TRANSMET DE PHP A TWIG LA LISTE DES ANNONCES
             // DANS LA VARIABLE TWIG annonces
+            // => INJECTION DE DEPENDANCES ENTRE PHP ET TWIG
             'annonces' => $annonceRepository->findBy([], [ "datePublication" => "DESC" ]),
             // COMPTER TOUTES LES LIGNES DANS LA TABLE SQL annonce
             'annoncesTotal' => $annonceRepository->count([]),

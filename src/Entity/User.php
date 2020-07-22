@@ -11,7 +11,8 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
- * @UniqueEntity(fields={"email"}, message="There is already an account with this email")
+ * @UniqueEntity(fields={"email"}, message="Email déjà pris...")
+ * @UniqueEntity(fields={"username"}, message="Username déjà pris...")
  */
 class User implements UserInterface
 {
@@ -49,7 +50,7 @@ class User implements UserInterface
     private $annonces;
 
     /**
-     * @ORM\Column(type="string", length=160)
+     * @ORM\Column(type="string", length=160, unique=true)
      */
     private $username;
 
@@ -82,7 +83,7 @@ class User implements UserInterface
      */
     public function getUsername(): string
     {
-        return $this->username;
+        return (string) $this->username;
     }
 
     /**

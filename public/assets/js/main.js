@@ -13,6 +13,9 @@ function ajouterAction (selecteurCSS, evenementJS, callback)
     }
 }
 
+// C'EST JAVASCRIPT QUI FOURNIT L'OBJET event
+// => ON N'A PAS A LE CREER
+// => INJECTION DE DEPENDANCE
 function afficherLightbox (event)
 {
     console.log(event.target);
