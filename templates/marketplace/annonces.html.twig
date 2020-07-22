@@ -9,7 +9,7 @@
             <div class="row">
                 {% for annonce in annonces %}
                     <article class="col-sm-4">
-                        <div><img class="img-thumbnail shadow-sm" src="{{ annonce.photo }}" alt=""></div>
+                        <div><img class="img-thumbnail shadow-sm" src="{{ asset('assets/upload/' ~ annonce.photo) }}" alt=""></div>
                         <h3><a href="{{ annonce.uri }}">{{ annonce.titre }}</a></h3>
                         <p class="border border-primary p-2">{{ annonce.description }}</p>
                         <div class="text-secondary">de {{ annonce.user.username }}</div>

@@ -59,6 +59,7 @@ class MarketplaceController extends AbstractController
         $form = $this->createForm(AnnonceMembreType::class, $annonce);
         $form->handleRequest($request);
 
+        $messageConfirmation = "VALEUR PAR DEFAUT FOURNIE PAR PHP";
         if ($form->isSubmitted() && $form->isValid()) {
             // COMPLETER LES INFOS MANQUANTES
             // AJOUTER L'AUTEUR GRACE A L'UTILISATEUR CONNECTE
@@ -69,17 +70,50 @@ class MarketplaceController extends AbstractController
             $dateActuelle = new \DateTime();                // PAS DE NAMESPACE => \
             $annonce->setDatePublication($dateActuelle);
 
+            // DEBUG: VA AFFICHER LES INFOS SUR LA VARIABLE DANS LA CONSOLE SYMFONY
+            dump($annonce);
+
+            $photoFile = $form->get('photo')->getData();
+            dump($photoFile);
+            if ($photoFile) {
+                $originalFilename = pathinfo($photoFile->getClientOriginalName(), PATHINFO_FILENAME);
+                $extension        = $photoFile->guessExtension();
+
+                // A TERME: IL FAUDRA CHANGER LE NOM...
+                $newFilename = "$originalFilename.$extension"; // TEMPORAIRE: A AMELIORER...
+
+                // ON DEPLACE LE FICHIER
+                $photoFile->move(
+                    $this->getParameter('upload_directory'),    
+                            // CHEMIN DU DOSSIER QUI STOCKE LES IMAGES UPLOADEES
+                            // A CONFIGURER DANS config/services.yaml
+                    $newFilename
+                );
+
+                // ON CHANGE LE CHEMIN DU FICHIER 
+                // POUR POUVOIR STOCKER LE BON CHEMIN DANS SQL
+                $annonce->setPhoto($newFilename);
+
+            }
+            
             // AJOUT DANS LA BASE DE DONNEES
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($annonce);
             $entityManager->flush();
 
+            $messageConfirmation = "BRAVO TON ANNONCE EST MAINTENANT PUBLIEE";
+
             // return $this->redirectToRoute('membre');
+        }
+        else
+        {
+            // ...
         }
 
         return $this->render('marketplace/membre.html.twig', [
-            'annonce'   => $annonce,
-            'form'      => $form->createView(),
+            'messageConfirmation'   => $messageConfirmation,
+            'annonce'               => $annonce,
+            'form'                  => $form->createView(),
         ]);
     }
 
