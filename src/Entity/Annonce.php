@@ -4,9 +4,17 @@ namespace App\Entity;
 
 use App\Repository\AnnonceRepository;
 use Doctrine\ORM\Mapping as ORM;
+// POUR API PLATFORM
+use ApiPlatform\Core\Annotation\ApiResource;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=AnnonceRepository::class)
+ * @ApiResource(
+ *     attributes={"pagination_items_per_page"=100},
+ *     normalizationContext={"groups"={"scenario1"}},
+ *     denormalizationContext={"groups"={"scenario2"}}
+ * ) 
  */
 class Annonce
 {
@@ -14,13 +22,15 @@ class Annonce
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Groups({"scenario1", "scenario2"})
      */
-    private $id;
+    public $id;
 
     /**
      * @ORM\Column(type="string", length=160)
+     * @Groups({"scenario1", "scenario2"})
      */
-    private $titre;
+    public $titre;
 
     /**
      * @ORM\Column(type="string", length=160)
@@ -29,13 +39,15 @@ class Annonce
 
     /**
      * @ORM\Column(type="text")
+     * @Groups({"scenario1"})
      */
-    private $description;
+    public $description;
 
     /**
      * @ORM\Column(type="string", length=160)
+     * @Groups({"scenario1", "scenario2"})
      */
-    private $photo;
+    public $photo;
 
     /**
      * @ORM\Column(type="datetime")
@@ -123,5 +135,18 @@ class Annonce
         $this->user = $user;
 
         return $this;
+    }
+
+    public function getTabJson ()
+    {
+        $tabAsso = [];
+        // ON VA CONVERTIR L'OBJET EN TABLEAU ASSOCIATIF
+        $tabAsso["id"]          = $this->id;
+        $tabAsso["titre"]       = $this->titre;
+        $tabAsso["description"] = $this->description;
+        $tabAsso["photo"]       = $this->photo;
+
+        // ...
+        return $tabAsso;
     }
 }

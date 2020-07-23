@@ -25,6 +25,7 @@ footer {
     opacity:0;
     transition: all 0.3s linear;
     flex-direction: column;
+    z-index:9999;
 }
 .lightbox.afficher {
     opacity:1;
@@ -39,4 +40,8 @@ footer {
 .carousel-item img {
     height:40vmin;
     object-fit: cover;
+}
+
+.custom-file-label::after {
+    content: "Choisis ta photo";
 }

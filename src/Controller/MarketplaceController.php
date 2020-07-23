@@ -9,6 +9,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+// POUR JSON
+use Symfony\Component\HttpFoundation\JsonResponse;
+
 
 class MarketplaceController extends AbstractController
 {
@@ -53,17 +56,20 @@ class MarketplaceController extends AbstractController
     /**
      * @Route("/membre", name="membre", methods={"GET","POST"})
      */
-    public function membre(Request $request): Response
+    public function membre(Request $request, AnnonceRepository $annonceRepository): Response
     {
+        $userConnecte = $this->getUser();
+
         $annonce = new Annonce();
         $form = $this->createForm(AnnonceMembreType::class, $annonce);
         $form->handleRequest($request);
 
         $messageConfirmation = "VALEUR PAR DEFAUT FOURNIE PAR PHP";
         if ($form->isSubmitted() && $form->isValid()) {
+            // CODE QUI TRAITE LE FORMULAIRE DE CREATION D'UNE ANNONCE
+
             // COMPLETER LES INFOS MANQUANTES
             // AJOUTER L'AUTEUR GRACE A L'UTILISATEUR CONNECTE
-            $userConnecte = $this->getUser();
             $annonce->setUser($userConnecte);
 
             // https://www.php.net/manual/fr/class.datetime.php
@@ -114,7 +120,51 @@ class MarketplaceController extends AbstractController
             'messageConfirmation'   => $messageConfirmation,
             'annonce'               => $annonce,
             'form'                  => $form->createView(),
+            // affichage des annonces
+            'annonces'              => $annonceRepository->findBy([ "user" => $userConnecte->getId() ], [ "datePublication" => "DESC" ]),
+
         ]);
     }
+
+
+    /**
+     * @Route("/apijson", name="apijson", methods={"GET","POST"})
+     */
+    public function apijson(Request $request, AnnonceRepository $annonceRepository): Response
+    {
+        // ON VA RENVOYER DU JSON
+        // https://symfony.com/doc/current/components/http_foundation.html
+        // https://symfony.com/doc/current/components/http_foundation.html#creating-a-json-response
+
+        $tabAssoJson = [];
+        // ON RAJOUTE LES INFOS DANS LE TABLEAU ASSOCIATIF
+        $tabAssoJson["date"] = date("H:i:s");
+
+        // LISTE DES ANNONCES
+        $listeAnnonce = $annonceRepository->findBy([], [ "datePublication" => "DESC" ]);
+        // ON CONVERTIR NOS ENTITES EN TABLEAU ASSOCIATIF
+        $tabAnnonces = [];
+        foreach($listeAnnonce as $annonce)
+        {
+            $tabAnnonces[] = $annonce->getTabJson();
+        }
+        $tabAssoJson["annonces"] = $tabAnnonces;
+
+        // ON RANGE LE TABLEAU ASSO DANS UN OBJET DE CLASSE JsonResponse
+        $objetJsonResponse = new JsonResponse($tabAssoJson);
+        // ON RENVOIE L'OBJET
+        return $objetJsonResponse;
+        
+    }
+
+    /**
+     * @Route("/front-in-symfony", name="front-in-symfony")
+     */
+    public function frontInSymfony()
+    {
+        return $this->render('marketplace/front-in-symfony.html.twig', [
+        ]);
+    }
+
 
 }
