@@ -3,14 +3,16 @@
 namespace App\Controller;
 
 use App\Entity\Annonce;
+use App\Entity\Contact;
+use App\Form\ContactType;
 use App\Form\AnnonceMembreType;
 use App\Repository\AnnonceRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 // POUR JSON
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 
 class MarketplaceController extends AbstractController
@@ -166,5 +168,36 @@ class MarketplaceController extends AbstractController
         ]);
     }
 
+
+    /**
+     * @Route("/contact", name="contact", methods={"GET","POST"})
+     */
+    public function contact(Request $request): Response
+    {
+        $messageConfirmation = "";
+
+        $contact = new Contact();
+        $form = $this->createForm(ContactType::class, $contact);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            // COMPLETER LES INFOS MANQUANTES
+            $contact->setDateMessage(new \DateTime);
+
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($contact);
+            $entityManager->flush();
+
+            $messageConfirmation = "MERCI DE VOTRE MESSAGE.";
+
+        }
+
+        // PAGE PUBLIQUE POUR LES VISITEURS
+        return $this->render('marketplace/contact.html.twig', [
+            'contact'               => $contact,
+            'form'                  => $form->createView(),
+            'messageConfirmation'   => $messageConfirmation,
+        ]);
+    }
 
 }
