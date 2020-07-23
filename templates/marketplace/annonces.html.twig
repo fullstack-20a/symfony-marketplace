@@ -10,7 +10,7 @@
                 {% for annonce in annonces %}
                     <article class="col-sm-4">
                         <div><img class="img-thumbnail shadow-sm" src="{{ asset('assets/upload/' ~ annonce.photo) }}" alt=""></div>
-                        <h3><a href="{{ annonce.uri }}">{{ annonce.titre }}</a></h3>
+                        <h3><a href="{{ url('annonce_detail', { 'uri' : annonce.uri }) }}">{{ annonce.titre }}</a></h3>
                         <p class="border border-primary p-2">{{ annonce.description }}</p>
                         <div class="text-secondary">de {{ annonce.user.username }}</div>
                         <div class="text-secondary">publiée le {{ annonce.datePublication ? annonce.datePublication|date('d/m/Y à H:i') : '' }}</div>

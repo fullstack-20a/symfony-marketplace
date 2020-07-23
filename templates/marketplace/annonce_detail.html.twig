@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}ANNONCE INDIVIDUELLE{% endblock %}
+
+{% block body %}
+
+        <section class="container">
+            <div class="row">
+                <article class="col-sm-8">
+                    <div><img class="img-thumbnail shadow-sm" src="{{ asset('assets/upload/' ~ annonce.photo) }}" alt=""></div>
+                    <h3><a href="{{ annonce.uri }}">{{ annonce.titre }}</a></h3>
+                    <p class="border border-primary p-2">{{ annonce.description }}</p>
+                    <div class="text-secondary">de {{ annonce.user.username }}</div>
+                    <div class="text-secondary">publiée le {{ annonce.datePublication ? annonce.datePublication|date('d/m/Y à H:i') : '' }}</div>
+                </article>
+            </div>
+        </section>
+
+{% endblock %}

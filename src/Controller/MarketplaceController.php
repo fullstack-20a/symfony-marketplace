@@ -200,4 +200,15 @@ class MarketplaceController extends AbstractController
         ]);
     }
 
+    /**
+     * @Route("/annonce/{uri}", name="annonce_detail", methods={"GET"})
+     */
+    public function annonceDetail(Annonce $annonce): Response
+    {
+        return $this->render('marketplace/annonce_detail.html.twig', [
+            'annonce' => $annonce,
+        ]);
+    }
+
+
 }
